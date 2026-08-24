@@ -1,0 +1,4 @@
+interface:
+  display_name: "Apply Design Best Practices"
+  short_description: "Route UI work to the best design skill"
+  default_prompt: "Use $apply-design-best-practices to choose and apply the best design skill for this UI task."
