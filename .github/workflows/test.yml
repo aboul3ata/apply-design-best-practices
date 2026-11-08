@@ -2,19 +2,30 @@ name: Test
 
 on:
   push:
+    branches:
+    - main
+    tags:
+    - v*
   pull_request:
   schedule:
-    - cron: "17 8 * * 1"
+  - cron: "17 8 * * 1"
 
+  workflow_dispatch:
 permissions:
   contents: read
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: node --test test/skill.test.mjs
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - run: node --test test/skill.test.mjs
+    timeout-minutes: 2
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
