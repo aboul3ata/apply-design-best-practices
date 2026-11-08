@@ -2,10 +2,6 @@ name: Test
 
 on:
   push:
-    branches:
-    - main
-    tags:
-    - v*
   pull_request:
   schedule:
   - cron: "17 8 * * 1"
@@ -27,5 +23,5 @@ jobs:
     - run: node --test test/skill.test.mjs
     timeout-minutes: 2
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
